@@ -56,7 +56,8 @@
                                    (server-defl "DEFL")
                                    (server-info "INFO")
                                    (server-docl "DOCL")
-                                   (server-comp "COMP"))
+                                   (server-comp "COMP")
+                                   (server-xref "XREF"))
   "Alchemist server API codes.")
 
 (defun alchemist-server-start (env)
@@ -129,7 +130,8 @@ Elixir mix project is live."
           (alchemist-server-api-code 'server-defl)
           (alchemist-server-api-code 'server-info)
           (alchemist-server-api-code 'server-docl)
-          (alchemist-server-api-code 'server-comp))
+          (alchemist-server-api-code 'server-comp)
+          (alchemist-server-api-code 'server-xref))
   "Regular expression to identify Alchemist server API end markers.")
 
 (defun alchemist-server-contains-end-marker-p (string)
@@ -200,6 +202,13 @@ Process server respond with FILTER."
 Process server respond with FILTER."
   (alchemist-server-start-if-not-running)
   (alchemist-server-send-request (alchemist-server-build-request-string 'server-comp args) filter))
+
+(defun alchemist-server-xref (args filter)
+  "Make an Alchemist server xref request with ARGS.
+
+Process server respond with FILTER."
+  (alchemist-server-start-if-not-running)
+  (alchemist-server-send-request (alchemist-server-build-request-string 'server-xref args) filter))
 
 (defun alchemist-server-status ()
   "Report the server status for the current Elixir project."

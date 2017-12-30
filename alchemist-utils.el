@@ -29,6 +29,10 @@
 (require 'dash)
 (require 's)
 
+;; todo should also match private functions
+(defconst alchemist-utils--function-regex "def\s\\([a-z_]+\\)"
+  "The regex for matching Elixir def macro.")
+
 (defun alchemist-utils-build-command (command-list)
   "Build the commands list for the runner."
   (let* ((command-list (-flatten (if (stringp command-list)
@@ -153,6 +157,10 @@ Call AFTER-FN after performing the search."
       (if (and (= current-major major) (> current-minor minor))
           t
         (and (= current-minor minor) (>= current-tiny tiny))))))
+
+;; todo write test for this
+(defun alchemist-utils-is-function (str)
+  (string-match alchemist-utils--function-regex str))
 
 (provide 'alchemist-utils)
 

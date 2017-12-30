@@ -2,6 +2,7 @@ Code.require_file "../api/comp.exs", __DIR__
 Code.require_file "../api/docl.exs", __DIR__
 Code.require_file "../api/defl.exs", __DIR__
 Code.require_file "../api/eval.exs", __DIR__
+Code.require_file "../api/xref.exs", __DIR__
 Code.require_file "../api/info.exs", __DIR__
 Code.require_file "../api/ping.exs", __DIR__
 Code.require_file "../api/version.exs", __DIR__
@@ -37,6 +38,8 @@ defmodule Alchemist.Helpers.ProcessCommands do
         API.Eval.request(args)
       ["DEFL", args] ->
         API.Defl.request(args)
+      ["XREF"] ->
+        API.Xref.request(args)
       ["PING"] ->
         API.Ping.request()
       ["VERSION"] ->

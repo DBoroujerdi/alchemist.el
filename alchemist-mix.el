@@ -158,6 +158,27 @@ When no tests had been run before calling this function, do nothing."
       (alchemist-mix--execute-test alchemist-last-run-test)
     (message "No tests have been run yet")))
 
+(defun alchemist-mix-xref-module-callers (&optional prefix)
+  "Run xref callers for the current module in scope."
+  (interactive)
+  (let ((module (alchemist-scope-module)))
+    (alchemist-mix-execute (list "xref" "callers" module) prefix)))
+
+(defun alchemist-mix-xref-function-callers-at-point ()
+  "Get the callers for the function at point."
+  (interactive)
+  (let ((line (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+        (module (alchemist-scope-module))
+        function)
+    (when (alchemist-utils-is-function line)
+      (setq function (match-string 1 line))
+      (alchemist-mix-execute (list "xref" "callers" (concat module "." function))))))
+
+(defun alchemist-mix-xref (command &optional prefix)
+  "Run Xref for the current project."
+  (interactive "Mmix xref: \nP")
+  (alchemist-mix-execute (list "xref" command) prefix))
+
 (defun alchemist-mix-compile (command &optional prefix)
   "Compile the whole elixir project. Prompt for the mix env if the prefix
 arg is set."
