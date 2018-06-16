@@ -19,7 +19,9 @@ defmodule Alchemist.Server do
   alias Alchemist.Server.Socket, as: ServerSocket
 
   def start([args]) do
+    Mix.start
     {opts, _, _} = OptionParser.parse(args, switches: [port: :integer])
+    app = Keyword.get(opts, :app, "unknown_app")
     env = Keyword.get(opts, :env, "dev")
     noansi = Keyword.get(opts, :no_ansi, false)
     Application.put_env(:iex, :colors, [enabled: !noansi])

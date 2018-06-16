@@ -38,7 +38,7 @@ defmodule Alchemist.Helpers.ProcessCommands do
         API.Eval.request(args)
       ["DEFL", args] ->
         API.Defl.request(args)
-      ["XREF"] ->
+      ["XREF", args] ->
         API.Xref.request(args)
       ["PING"] ->
         API.Ping.request()

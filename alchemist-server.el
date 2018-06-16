@@ -70,7 +70,12 @@ will be started instead."
                                  alchemist-server-envs nil nil nil)))
   (when (alchemist-server-process-p)
     (kill-process (alchemist-server-process)))
-  (alchemist-server-start-in-env env))
+  (alchemist-server-start-in-env env (alchemist-server-mix-project-name)))
+
+(defun alchemist-server-mix-project-name ()
+  "comment section"
+  "hello-world"
+  )
 
 (defun alchemist-server-start-if-not-running ()
   "Start a new Alchemist server if not already running.
@@ -79,19 +84,26 @@ An Alchemist server will be started for the current Elixir mix project."
   (unless (alchemist-server-process-p)
     (alchemist-server-start-in-env alchemist-server-env)))
 
-(defun alchemist-server-start-in-env (env)
+(defun alchemist-server-start-in-env (env app)
   "Start an Alchemist server with the ENV."
   (let* ((process-name (alchemist-server-process-name))
          (default-directory (if (string= process-name "alchemist-server")
                                 default-directory
                               process-name))
-         (server-command (format "%s %s %s"
+         (server-command (format "%s %s %s %s"
                                  alchemist-execute-command
                                  (shell-quote-argument alchemist-server)
-                                 (shell-quote-argument env)))
+                                 (alchemist-server--opt-arg "env" env)
+                                 (alchemist-server--opt-arg "app" app)))
          (process (start-process-shell-command process-name "*alchemist-server*" server-command)))
     (set-process-query-on-exit-flag process nil)
     (alchemist-server--store-process process)))
+
+(defun alchemist-server--opt-arg (opt arg)
+  "Create a \"--opt arg\" string from OPT and ARG."
+  (format "%s %s"
+          (shell-quote-argument (format "--%s" opt))
+          (shell-quote-argument arg)))
 
 (defun alchemist-server--store-process (process)
   "Store PROCESS in `alchemist-server-processes'."

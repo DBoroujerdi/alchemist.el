@@ -1,4 +1,4 @@
-;;; alchemist-macroexpand.el --- Macro expansion support -*- lexical-binding: t -*-
+;;; alchemist-xref.el --- Macro expansion support -*- lexical-binding: t -*-
 
 ;; Copyright © 2014-2017 Samuel Tonini
 
@@ -49,7 +49,7 @@
   (interactive)
   (let ((module (alchemist-scope-module)))
 
-    (alchemist-server-xref-candidates (alchemist-xref-build-server-arg "module" arg)
+    (alchemist-server-xref (alchemist-xref-build-server-arg ":module" module)
                                       #'alchemist-xref-filter)
 
     ))
@@ -67,7 +67,7 @@
 (defun alchemist-xref-build-server-arg (type arg)
   (if (not (equal major-mode 'alchemist-iex-mode))
       (alchemist-company-build-scope-arg arg)
-    (format "{ \"%s\", \"%s\"}" type arg)))
+    (format "{ %s, \"%s\"}" type arg)))
 
 
 (defun alchemist-xref-get-function-callers ()

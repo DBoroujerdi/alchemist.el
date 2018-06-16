@@ -16,8 +16,9 @@ defmodule Alchemist.Helpers.Complete do
   """
 
   def run(exp) do
+    IO.puts exp
     code = case is_bitstring(exp) do
-             true -> exp |> String.to_char_list
+             true -> exp |> String.to_charlist
              _ -> exp
            end
 
@@ -98,7 +99,7 @@ defmodule Alchemist.Helpers.Complete do
   end
 
   defp yes(hint, entries) do
-    {:yes, String.to_char_list(hint), Enum.map(entries, &String.to_char_list/1)}
+    {:yes, String.to_charlist(hint), Enum.map(entries, &String.to_charlist/1)}
   end
 
   defp no do

@@ -4,7 +4,6 @@ defmodule Alchemist.API.Xref do
 
   @moduledoc false
 
-  alias Alchemist.Helpers.CaptureIO
   alias Alchemist.Helpers.Response
   alias Mix.Tasks.Xref
 
@@ -14,11 +13,21 @@ defmodule Alchemist.API.Xref do
     |> process
   end
 
+  # def process({:module, name}) do
+  #   try do
+  #     CaptureIO.capture_io(fn ->
+  #       Code.eval_string("Mix.Tasks.Xref.calls", [], __ENV__) |> IO.inspect
+  #     end) |> IO.inspect
+  #   rescue
+  #     _e -> nil
+  #   end
+  # end
+
   def process({:module, name}) do
     Xref.calls
     |> Enum.filter(fn (%{callee: {mod, _, _}}) -> mod == name end)
     |> Enum.map(fn(%{caller_module: module, file: file, line: line}) -> {module, line, file} end)
-    |> Enum.map(fn ({m,l,f}) -> Atom.to_string(m) + ":" + file + ":" + Integer.to_string(l) end)
+    |> Enum.map(fn ({m,l,f}) -> Atom.to_string(m) + ":" + f + ":" + Integer.to_string(l) end)
     |> response
   end
 
